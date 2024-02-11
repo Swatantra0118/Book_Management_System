@@ -1,0 +1,132 @@
+<div class="container">
+  <h1 class="mt-3">Add Book</h1>
+
+  <form [formGroup]="formModel" (ngSubmit)="onFormSubmit()">
+    <div class="mt-2 mb-5">
+      <div class="mt-3">
+        <label for="name" class="form-label">Name</label>
+        <input
+          type="text"
+          id="name"
+          name="name"
+          class="form-control"
+          formControlName="name"
+        />
+      </div>
+
+      <div class="mt-3">
+        <label for="urlHandle" class="form-label">Url Handle</label>
+        <input
+          type="text"
+          id="urlHandle"
+          name="urlHandle"
+          class="form-control"
+          formControlName="urlHandle"
+        />
+      </div>
+
+      <div class="mt-3">
+        <label for="description" class="form-label">Description</label>
+        <input
+          type="text"
+          id="description"
+          name="description"
+          class="form-control"
+          formControlName="description"
+        />
+      </div>
+
+      <div class="mt-3">
+        <label for="featuredImageUrl" class="form-label"
+          >Featured Image Url
+          <button
+            type="button"
+            class="btn btn-light"
+            (click)="openImageSelector()"
+          >
+            Select Image
+          </button>
+        </label>
+
+        <!-- <ng-container *ngIf="featuredImageUrl !== '' ">
+          <div>
+            <img [src]="featuredImageUrl" height="100" class="my-2" />
+          </div>
+        </ng-container> -->
+
+        <input
+          type="text"
+          id="featuredImageUrl"
+          name="featuredImageUrl"
+          class="form-control"
+          formControlName="featuredImageUrl"
+        />
+      </div>
+
+      <div class="mt-3">
+        <label for="author" class="form-label">Author</label>
+        <input
+          type="text"
+          id="author"
+          name="author"
+          class="form-control"
+          formControlName="author"
+        />
+      </div>
+
+      <div class="form-check mt-3">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          id="isAvailable"
+          name="isAvailable"
+          formControlName="isAvailable"
+        />
+        <label class="form-check-label" for="isAvailable">
+          Is Available?
+        </label>
+      </div>
+
+      <div class="mt-3">
+        <label for="genres" class="form-label">Genres</label>
+        <ng-container *ngIf="genres$ | async as genres">
+          <select
+            class="form-control"
+            formControlName="genres"
+            name="genres"
+            id="genres"
+            multiple
+          >
+            <option *ngFor="let genre of genres" [value]="genre.id">
+              {{ genre.name }}
+            </option>
+          </select>
+        </ng-container>
+      </div>
+
+      <star-rating-control formControlName="rating"></star-rating-control>
+
+      <div class="mt-3">
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div
+  class="images-container-modal"
+  [ngClass]="{
+    'd-block': isImageSelectorVisible,
+    'd-none': !isImageSelectorVisible
+  }"
+>
+  <button
+    type="button"
+    class="btn btn-light"
+    style="position: fixed; top: 10px; right: 10px"
+    (click)="closeImageSelector()"
+  >
+    X
+  </button>
+  <app-image-selector></app-image-selector>
+</div>

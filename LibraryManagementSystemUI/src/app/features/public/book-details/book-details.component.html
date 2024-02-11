@@ -1,0 +1,58 @@
+<ng-container *ngIf="book$ | async as book; else loader">
+  <div class="container">
+    <div class="py-5">
+      <div class="col-12 col-md-8 col-lg-6 mx-auto">
+        <img
+          [src]="book.featuredImageUrl"
+          [title]="book.name"
+          class="img-fluid"
+        />
+
+        <h1 class="mt-4">{{ book.name }}</h1>
+
+        <ng-container *ngIf="book.currentlyBorrowedByUserId != null && book.lentByUserId == userId" >
+          <h4 class="mt-4 mb-3">Currently Borrowed by {{ book.borrower }}</h4>
+        </ng-container>
+
+        <star-rating [disabled]="true" [size]="'large'" [rating]="book.rating"></star-rating>
+
+        <div class="d-flex justify-content-between mt-4">
+          <span>{{ book.author }}</span>
+        </div>
+
+        <div *ngIf="book.genres" class="mt-4">
+          <span
+            class="badge bg-secondary me-2"
+            *ngFor="let genre of book.genres"
+          >
+            {{ genre.name }}
+          </span>
+        </div>
+        <div>
+            <p class="card-text">
+                {{ book.description }}
+              </p>
+        </div>
+        <ng-container *ngIf="book.lentByUserId != userId">
+          <ng-container *ngIf=!isEmptyLocalStorage>
+            <div class="mt-3">
+              <button [disabled]="!book.isAvailable" class="btn btn-primary" (click)="onClick(book.id)">Borrow This Book</button>
+            </div>
+          </ng-container>
+        </ng-container>
+        <!-- <ng-container *ngIf=!isEmptyLocalStorage>
+          <div class="mt-3">
+            <button [disabled]="!book.isAvailable" class="btn btn-primary" (click)="onClick(book.id)">Borrow This Book</button>
+          </div>
+        </ng-container> -->
+      </div>
+    </div>
+  </div>
+</ng-container>
+<ng-template #loader>
+  <div class="text-center mt-5">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</ng-template>
